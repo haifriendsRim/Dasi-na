@@ -1,9 +1,373 @@
-/* =========================================
-   다시, 나 - 스타일 파일
-   1일차: 구글 글꼴만 적용 (디자인은 2일차)
-   ========================================= */
+@charset "UTF-8";
 
-/* 페이지 전체에 Noto Sans KR 글꼴 적용 */
+/* =========================================================
+   1. 색상 변수 정의 (:root)
+   - 대표색, 강조색, 글자색, 배경색 및 카드 전용 흰색 변수 정의
+   ========================================================= */
+:root {
+  --primary-color: #1B2A4A;   /* 대표색: 미드나잇 네이비 */
+  --accent-color: #C27D7D;    /* 강조색: 더스티 로즈 */
+  --text-color: #2C3138;      /* 글자색: 딥 차콜 */
+  --bg-color: #F8F6F2;        /* 배경색: 웜 오트밀 */
+  --card-bg: #FFFFFF;         /* 카드 배경색: 순백색 */
+  --line-color: #E2DDD6;      /* 구분선 및 테두리 연한 베이지 */
+}
+
+/* =========================================================
+   2. 기본 리셋 및 전역 스타일
+   - 구글 글꼴 Noto Sans KR 적용 및 여백 초기화
+   ========================================================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: 'Noto Sans KR', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  word-break: keep-all;
+  /* 상단 헤더 고정 높이만큼 본문 상단 여백 확보 */
+  padding-top: 110px;
 }
+
+/* 링크 공통 스타일 */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 목록 기호 제거 */
+ul {
+  list-style: none;
+}
+
+/* =========================================================
+   3. 상단 헤더 및 메뉴 (스크롤 고정 & Flexbox)
+   ========================================================= */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--card-bg);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  z-index: 1000;
+  padding: 12px 16px;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 1.25rem;
+  color: var(--primary-color);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+/* 네비게이션 메뉴: Flexbox 가로 배치 및 모바일 줄바꿈 허용 */
+header nav ul {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+header nav a {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--primary-color);
+  padding: 4px 6px;
+  transition: color 0.2s ease;
+}
+
+header nav a:hover,
+header nav a:focus {
+  color: var(--accent-color);
+}
+
+/* =========================================================
+   4. 메인 컨텐츠 및 섹션 공통 스타일
+   ========================================================= */
+main {
+  width: 100%;
+  padding: 20px 16px;
+}
+
+section {
+  margin-bottom: 48px;
+}
+
+/* 각 섹션 제목 (H2) 및 하단 강조색 짧은 밑줄 */
+section h2 {
+  font-size: 1.35rem;
+  color: var(--primary-color);
+  font-weight: 700;
+  margin-bottom: 20px;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+/* 가상 요소(::after)를 활용한 강조색 짧은 밑줄 */
+section h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 36px;
+  height: 3px;
+  background-color: var(--accent-color);
+  border-radius: 2px;
+}
+
+/* =========================================================
+   5. 소개 섹션 (#about) - Grid & 원형 프로필
+   ========================================================= */
+#about {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  text-align: center;
+  gap: 12px;
+  background-color: var(--card-bg);
+  padding: 28px 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(27, 42, 74, 0.05);
+}
+
+/* 프로필 사진: 원형 마스크 처리 */
+#about img {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--card-bg);
+  box-shadow: 0 4px 12px rgba(27, 42, 74, 0.12);
+}
+
+#about h2 {
+  font-size: 1.4rem;
+  margin-bottom: 4px;
+  padding-bottom: 0;
+}
+
+/* 소개 섹션의 이름 h2는 밑줄을 숨기고 깔끔하게 처리 */
+#about h2::after {
+  display: none;
+}
+
+#about p {
+  font-size: 0.95rem;
+  color: var(--text-color);
+  line-height: 1.5;
+}
+
+/* =========================================================
+   6. 경력 섹션 (#career) - Grid 카드 레이아웃
+   ========================================================= */
+#career {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* H2 제목이 Grid 전체 폭을 차지하도록 설정 */
+#career h2 {
+  grid-column: 1 / -1;
+  margin-bottom: 8px;
+}
+
+/* 개별 경력 카드 (article) 스타일 */
+#career article {
+  background-color: var(--card-bg);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(27, 42, 74, 0.04);
+  border-left: 4px solid var(--accent-color); /* 좌측 강조 포인트 선 */
+  display: grid;
+  gap: 6px;
+}
+
+#career article h3 {
+  font-size: 1.05rem;
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+/* 기간 표시 텍스트 */
+#career article p:nth-of-type(1) {
+  font-size: 0.82rem;
+  color: #7A808A;
+}
+
+/* 업무 내용 텍스트 */
+#career article p:nth-of-type(2) {
+  font-size: 0.92rem;
+  color: var(--text-color);
+  margin-top: 4px;
+}
+
+/* =========================================================
+   7. 역량 및 교육·자격 섹션 (#skills, #education)
+   ========================================================= */
+#skills ul,
+#education ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#skills li,
+#education li {
+  background-color: var(--card-bg);
+  padding: 14px 16px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  border: 1px solid var(--line-color);
+  position: relative;
+  padding-left: 28px;
+}
+
+/* 리스트 항목 앞 강조색 원형 불릿 추가 */
+#skills li::before,
+#education li::before {
+  content: '';
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent-color);
+}
+
+/* =========================================================
+   8. 문의 섹션 (#contact)
+   ========================================================= */
+#contact p {
+  font-size: 0.92rem;
+  margin-bottom: 14px;
+}
+
+/* 플레이스홀더 이미지 모바일 반응형 처리 */
+#contact img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(27, 42, 74, 0.05);
+  display: block;
+}
+
+/* =========================================================
+   9. 하단 푸터 (Footer)
+   ========================================================= */
+footer {
+  text-align: center;
+  padding: 24px 16px;
+  background-color: #EFECE6;
+  font-size: 0.8rem;
+  color: #7A808A;
+  margin-top: 40px;
+}
+
+/* =========================================================
+   10. 태블릿 반응형 스타일 (화면 너비 768px 이상)
+   ========================================================= */
+@media (min-width: 768px) {
+  /* 상단 헤더: 높이 축소에 맞춘 본문 상단 여백 재조정 */
+  body {
+    padding-top: 80px;
+  }
+
+  /* 헤더 레이아웃: 사이트 이름 왼쪽, 메뉴 오른쪽 가로 배치 */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 32px;
+  }
+
+  header h1 {
+    margin-bottom: 0;
+    font-size: 1.4rem;
+  }
+
+  header nav ul {
+    gap: 20px;
+  }
+
+  header nav a {
+    font-size: 0.95rem;
+  }
+
+  /* 본문 영역: 가로 최대 너비 제한 및 중앙 정렬 */
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  /* 소개 섹션 (#about): 사진 왼쪽, 텍스트 오른쪽 2열 Grid 배치 */
+  #about {
+    grid-template-columns: 200px 1fr;
+    align-items: center;
+    text-align: left;
+    gap: 32px;
+    padding: 36px 32px;
+  }
+
+  /* 경력 섹션 (#career): 카드를 2열(가로 2개씩) Grid로 배치 */
+  #career {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  /* 역량 및 교육·자격 목록: 가로 2열 Grid로 변경하여 배치 */
+  #skills ul,
+  #education ul {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+}
+
+/* =========================================================
+   11. PC/데스크톱 반응형 스타일 (화면 너비 1024px 이상)
+   ========================================================= */
+@media (min-width: 1024px) {
+  /* 본문 영역 최대 너비 확장 */
+  main {
+    max-width: 1100px;
+    padding: 48px 32px;
+  }
+
+  /* 소개 섹션: 넓어진 화면에 맞춰 프로필 사진과 이름 크기 확대 */
+  #about {
+    grid-template-columns: 240px 1fr;
+    gap: 40px;
+    padding: 44px 40px;
+  }
+
+  #about img {
+    width: 220px;
+    height: 220px;
+  }
+
+  #about h2 {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+  }
+
+  #about p {
+    font-size: 1.05rem;
+  }
+
+  /* 섹션 타이틀 크기 확대 */
+  section h2 {
+    font-size: 1.5rem;
+  }
+}
+```<ElicitationsGroup>
+</ElicitationsGroup>
